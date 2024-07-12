@@ -38,4 +38,14 @@
 
 1.12
 
+STEP1: Given Level l and index x calculate value 
+(define (pascal-iter l i) (cond 
+                                ((and (= l 1) (= i 1)) 1)
+                                ((and (< i (+ l 1)) (> i 0)) (+ (pascal-iter (- l 1) i) 
+                                                          (pascal-iter (- l 1) (- i 1))
+                                                          ))
+                                (else 0)
+                                ))
+
+
 1.13
