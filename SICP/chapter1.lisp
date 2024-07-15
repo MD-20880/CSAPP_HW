@@ -132,7 +132,7 @@ STEP1: Given Level l and index x calculate value
 (define (simpson-rule f a b n) (
         
 ))
-=======
+
 1.18
 (define (double num) (* num 2))
 (define (halve num) (/ num 2))
@@ -168,4 +168,3 @@ STEP1: Given Level l and index x calculate value
 
 
 P52
->>>>>>> 159c5b5 (add 1.19)
