@@ -49,3 +49,85 @@ STEP1: Given Level l and index x calculate value
 
 
 1.13
+
+
+1.22
+(define (fermat-test n) 
+        (define (try-it a)
+                (= (expmond a n n) a))
+        (try-it (+1 (random (- n 1)))))
+
+(define (expmond base exp m)
+        (cond ((= exp 0) 1)
+                ((even? exp) (remainder (square (expmond base (/ exp 2) m)) m))
+                (else (* (remainder base m) (remainder (expmond base (- exp 1) m) m)))))
+
+(define (fast-prime? n times)
+        (if (= times 0) 1)
+                (and (fermat-test n ) (fast-prime? n (- times 1))))
+
+(define (timed-prime-test n)
+        (newline)
+        (display n)
+        (start-prime-test n (runtime)))
+
+(define (start-prime-test n start-time)
+        (if (prime? n)
+                (report-time (- (runtime) start-time))))
+
+(define (report-prime elapsed-time)
+        (display " * * * ")
+        (display elapsed-time))
+
+(define (prime? n)
+        (fast-prime? n 10))
+
+(define (search-for-prime floor nums) 
+        (timed-prime-test (search-prime-incre floor))
+        (search-for-prime (+ (search-prime-incre floor))))
+
+(define (search-prime-incre n)
+        (case ((prime? n) n)
+                ((even? n) (search-prime-incre (+ n 1)))
+                (else (search-prime-incre (+ n 2)))))   
+
+#如果不能运行，加上
+(define (runtime) 20)
+(define (sqare n) (* n n))
+
+#运行
+(search-for-prime 1000 3)
+
+#runtime 函数不可用，相关练习先搁置
+
+
+(define (expmond base exp m)
+        (define (square-when-pass-check base exp m)
+                (cond ((= (remainder (square (expmond base (/ exp 2) m)) m) 1) 0)
+                        (else (remainder ( square (expmond base (/ exp 2) m)) m))))
+        (define (square-when-not-one n) (if (= n 1)
+                                                0
+                                                (square n)))
+        (cond ((= exp 0) 1)
+                ((even? exp) (remainder ( square-when-not-one (expmond base (/ exp 2) m)) m))
+                (else (remainder (* base (expmond base (- exp 1) m)) m))))
+
+
+
+
+#1.29
+(define (even? n) (= (remainder n 2) 0))
+(define (next-leading-factor i n) (if (and (= i 1) (= i n)) 
+                                        1
+                                        (case ((even? i) 2)
+                                                (else 4))))
+(define (sum term a next b) (
+        (if (> a b) 
+                0
+                (+      (term a) 
+                        (sum term (next a) next b)))
+))
+
+(define (simpson-rule f a b n) (
+        
+))
