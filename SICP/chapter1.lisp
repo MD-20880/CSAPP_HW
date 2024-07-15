@@ -50,6 +50,7 @@ STEP1: Given Level l and index x calculate value
 
 1.13
 
+<<<<<<< HEAD
 
 1.22
 (define (fermat-test n) 
@@ -131,3 +132,40 @@ STEP1: Given Level l and index x calculate value
 (define (simpson-rule f a b n) (
         
 ))
+=======
+1.18
+(define (double num) (* num 2))
+(define (halve num) (/ num 2))
+(define (times a b) (cond 
+                        ((or (= a 0) ( = b 0)) 0)
+                        ((even? b) (double (times a (halve b))))
+                        (else (+ a (times a (- b 1))))
+                        ))
+(define (even? num) (= (remainder num 2) 0))
+
+
+1.19
+(define (fib n)
+  (fib-iter 1 0 0 1 n))
+
+(define (p-next p q) (+ (* p p) (* q q)))
+(define (q-next p q) (+ (* 2 p q) (* q q)))
+
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+        ((even? count)
+         (fib-iter a
+                   b
+                   (p-next p q)  ; compute p'
+                   (q-next p q)  ; compute q'
+                   (/ count 2)))
+        (else
+         (fib-iter (+ (* b q) (* a q) (* a p))
+                   (+ (* b p) (* a q))
+                   p
+                   q
+                   (- count 1)))))
+
+
+P52
+>>>>>>> 159c5b5 (add 1.19)
