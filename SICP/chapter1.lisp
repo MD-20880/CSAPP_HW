@@ -131,3 +131,50 @@ STEP1: Given Level l and index x calculate value
 (define (simpson-rule f a b n) (
         
 ))
+
+
+#1.32
+#a
+(define (accumulate combiner null-value term a next b)
+        (if (> a b)
+                null-value
+                (combiner (term a) (accumulate combiner null-value term (next a) next b))))
+
+(define (sum term a next b) 
+        (accumulate + 0 term a next b))
+
+(define (product term a next b)
+        (accumulate * 1 term a next b))
+
+#b
+(define (accumulate-iter combiner null-value term a next b)
+        (define (accumulate-iter-inner a result) 
+                (if (> a b)
+                        result
+                        (accumulate-iter-inner (next a) (combiner result (term a)))))
+        (accumulate-iter-inner a null-value))
+
+(define (sum term a next b) 
+        (accumulate-iter + 0 term a next b))
+
+(define (product term a next b)
+        (accumulate-iter * 1 term a next b))
+
+
+#1.33
+(define (filtered-accumulate filter combiner null-value term a next b)
+        (define (term-or-null a) 
+                (if (= (filter a) 1)
+                        (term a)
+                        null-value))
+        (define (accumulate-if-match a)
+                (if (> a b)
+                        null-value
+                        (combiner (term-or-null a) (accumulate-if-match (next a)))))
+        (accumulate-if-match a))
+
+(define (filter a)
+        (cond ((= a 1) 1)
+                ((= a 50) 1)
+                (else 0)))
+
