@@ -212,3 +212,16 @@ STEP1: Given Level l and index x calculate value
         (cond ((= a 1) 1)
                 ((= a 50) 1)
                 (else 0)))
+
+
+#1.35
+(define (abs a) 
+        ((if (< a 0)
+                -
+                +) a))
+
+(define (fixed-point f guess)
+        (let ((tolerence 0.001))
+        (if (< (abs (- (f guess) guess)) tolerence)
+                guess
+                (fixed-point f (f guess)))))
