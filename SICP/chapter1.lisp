@@ -225,3 +225,69 @@ STEP1: Given Level l and index x calculate value
         (if (< (abs (- (f guess) guess)) tolerence)
                 guess
                 (fixed-point f (f guess)))))
+
+(define (calculate-phi guess)
+        (define (golden-ratial a)
+                (+ 1 ( / 1 a)))
+        (fixed-point golden-ratial guess))
+
+#1.36
+
+(define (fixed-point f guess)
+        (let ((tolerence 0.001))
+        (define (fixed-point-display-iter guess) 
+                (newline)
+                (display guess)
+                (if (< (abs (- guess (f guess))) tolerence)
+                        guess
+                        (fixed-point-display-iter (f guess))))
+        (fixed-point-display-iter guess)
+        )
+        )
+
+(define (calculate-log guess) 
+        (fixed-point (lambda (y) (/ (log 1000.0) (log y))) guess))
+
+(define (calculate-log-average guess)
+        (define (f y) (+ (/ ( log 1000.0) (* 2 (log y))) (/ y 2)))
+        (fixed-point f guess))
+
+#1.37
+(define (cont-frac n d k)
+        (let ((maxiter k))
+        (define (cont-frac-inner k)
+                (newline)
+                (if (> k maxiter)
+                        0
+                        (/ (n k) (+ (d k) (cont-frac-inner (+ k 1))))))
+        (cont-frac-inner 1)))
+
+(define (cont-frac n d k)
+        (define (cont-frac-inner k result)
+                (if (< k 1)
+                        result
+                        (cont-frac-inner (- k 1) (/ (n k) (+ (d k) result)))))
+        (cont-frac-inner k 0.0))
+
+
+# 你需要取多大的k才能保证得到的近似值具有十进制的4位精度？
+
+(lambda (k) (if (= (remainder k 3) 0)
+                (* (/ k 3) 2)
+                1))
+(cont-frac (lambda (y) 1.0) 
+        (lambda (k) (if (= (remainder (+ k 1) 3) 0) (* (/ (+ k 1) 3) 2) 1))
+                        10.0)
+
+
+#1.39
+(define (tan-cf x k)
+        (cont-frac-reverse (lambda (k) (if (= k 1) x (* x x))) (lambda (k) (- (* k 2) 1)) k))
+
+(define (cont-frac-reverse n d k)
+        (define (cont-frac-inner k result)
+                (if (< k 1)
+                        result
+                        (cont-frac-inner (- k 1) (/ (n k) (- (d k) result)))))
+        (cont-frac-inner k 0.0))
+
