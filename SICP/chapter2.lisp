@@ -156,19 +156,19 @@
                    (/ 1.0 (lower-bound y)))))
 
 (define (make-interval a b) (cons a b))
-(define (upper-bond z) (cdr z))
-(define (lower-bond z) (car z))
+(define (upper-bound z) (cdr z))
+(define (lower-bound z) (car z))
 
 ;2.8
 (define (sub-interval a b)
-        (make-interval (- (lower-bond a) (lower-bond b))
-                        (- (upper-bond a) (upper-bond a))))
+        (make-interval (- (lower-bound a) (lower-bound b))
+                        (- (upper-bound a) (upper-bound a))))
 
 
 (define (print-interval a)
         (newline)
         (display "(")
-        (display (lower-bond a))
+        (display (lower-bound a))
         (display ",")
-        (display (upper-bond a))
-        (display (")")))
+        (display (upper-bound a))
+        (display ")"))
