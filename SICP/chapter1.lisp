@@ -291,3 +291,85 @@ STEP1: Given Level l and index x calculate value
                         (cont-frac-inner (- k 1) (/ (n k) (- (d k) result)))))
         (cont-frac-inner k 0.0))
 
+
+#1.40
+(define (fixed-point f guess)
+        (let ((tolerence 0.00001))
+        (define (fixed-point-display-iter guess) 
+                (newline)
+                (display guess)
+                (if (< (abs (- guess (f guess))) tolerence)
+                        guess
+                        (fixed-point-display-iter (f guess))))
+        (fixed-point-display-iter guess)
+        )
+        )
+
+(define (newton-transform g)
+        (lambda (x) 
+                (- x (/ (g x) ((derive g) x)))))
+
+(define (newton-method g guess)
+        (fixed-point (newton-transform g) guess))
+
+(define (derive g)
+        (let ((dx 0.00001))
+                (lambda (x)
+                        (/ (- (g (+ x dx)) (g x))
+                                dx))))
+
+(define (cubic a b c)
+        (lambda (x) (+ (* x x x) (* a x x) (* b x) c)))
+                
+
+#1.41
+(define (double g)
+        (lambda (x) (g (g x))))
+
+(define (inc x)
+        (+ x 1))
+
+(((double (double double)) inc) 5)
+
+#1.42
+(define (compose f g)
+        (lambda (x) (f (g x))))
+
+((compose (lambda (x) (* x x)) (lambda (x) (+ x 1))) 6)
+
+#1.43
+(define (repeated f times)
+        (lambda (x) 
+                (if (= times 0)
+                        x
+                        (f ((repeated f (- times 1)) x)))))
+
+#1.44
+(define (smooth g)
+        (let ((dx 0.00001))
+                (lambda (x) (/ (g (- x dx) (g x) (g (+ x dx))) 3))))
+
+(define (nth-smooth g n)
+        (repeated g n))
+
+#1.45
+(define (average x y)
+        (/ (+ x y) 2))
+
+(define (average-damp g)
+        (lambda (x) (average x (g x))))
+
+(define (sqrt-n-with-m-damp x n m guess)
+        (
+        fixed-point (repeated (average-damp (lambda (y) (/ x ((repeated (lambda (z) (* y z)) (- n 2)) y)))) m) guess
+        ))
+
+#1.46
+(define (iterative-improve good-enough? improve)
+        (define (iterative-improve-inner guess)
+                (if (good-enough? guess)
+                        guess
+                        (iterative-improve-inner (improve guess)))))
+
+#找个时间做掉把:p
+
